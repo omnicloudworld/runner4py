@@ -1,0 +1,66 @@
+site_name: Runner for Google Cloud Run
+
+docs_dir: .docs
+repo_url: https://gitlab.com/skyant/runner/cloudrun
+repo_name: skyant/runner/cloudrun
+edit_uri: ""
+
+theme: 
+    name: material
+    favicon: https://skyant.dev/assets/icons/558614-512-3.png
+    logo: https://skyant.dev/assets/icons/558614.svg
+    palette:
+        primary: amber
+        accent: deep purple
+    font:
+        text: Montserrat
+        code: Roboto Mono
+    icon:
+        repo: fontawesome/brands/gitlab
+    features:
+        - search.highlight
+        - search.suggest
+        - navigation.tabs
+        - navigation.tabs.sticky
+
+extra:
+    generator: true
+    homepage: https://skyant.dev
+
+    social:
+        
+        - icon: fontawesome/solid/sack-dollar
+          link: https://buymeacoffee.com/skyantdev
+          name: Donate us
+        
+        - icon: fontawesome/brands/twitter
+          link: https://twitter.com/skyantdev
+          name: SkyANT on Twitter
+
+        - icon: fontawesome/solid/comment
+          link: https://gitter.com/skyantdev/cloudrun
+
+
+
+extra_css:
+    - https://skyant.dev/static/css/skyant.css
+
+
+plugins:
+    - mkdocstrings:
+        handlers:
+            python:
+                options:
+                    show_source: true
+                    show_root_full_path: false
+                    show_root_toc_entry: true
+                    show_bases: false
+                    show_category_heading: false
+    - search:
+        indexing: 'full'
+
+
+nav:
+
+    - 'HOME': index.md
+    - 'QUICK START': start.md
