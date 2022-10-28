@@ -1,9 +1,21 @@
-site_name: Runner for Google Cloud Run
 
-docs_dir: .docs
+nav:
+
+    - 'HOME': index.md
+    - 'QUICK START': start.md
+
+
+
+site_name: Cloud Run
 repo_url: https://gitlab.com/skyant/runner/cloudrun
 repo_name: skyant/runner/cloudrun
+
+
+
+
+docs_dir: .docs
 edit_uri: ""
+
 
 theme: 
     name: material
@@ -23,6 +35,8 @@ theme:
         - navigation.tabs
         - navigation.tabs.sticky
 
+
+copyright: Copyright &copy; 2020 Iurii Tarasenko
 extra:
     generator: true
     homepage: https://skyant.dev
@@ -31,19 +45,21 @@ extra:
         
         - icon: fontawesome/solid/sack-dollar
           link: https://buymeacoffee.com/skyantdev
-          name: Donate us
+          name: donation
         
-        - icon: fontawesome/brands/twitter
-          link: https://twitter.com/skyantdev
-          name: SkyANT on Twitter
+        - icon: fontawesome/brands/linkedin
+          link: https://www.linkedin.com/company/skyantdev
+          name: news
 
-        - icon: fontawesome/solid/comment
-          link: https://gitter.com/skyantdev/cloudrun
-
+        - icon: fontawesome/solid/user-group
+          link: https://groups.google.com/a/skyant.dev/g/community?label=cloudrun
+          name: community
 
 
 extra_css:
     - https://skyant.dev/static/css/skyant.css
+    - https://skyant.dev/static/css/hide-title.css
+    - https://skyant.dev/static/css/hide-versions.css
 
 
 plugins:
@@ -56,11 +72,5 @@ plugins:
                     show_root_toc_entry: true
                     show_bases: false
                     show_category_heading: false
-    - search:
-        indexing: 'full'
-
-
-nav:
-
-    - 'HOME': index.md
-    - 'QUICK START': start.md
+    - search
+    - section-index
