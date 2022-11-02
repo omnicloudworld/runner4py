@@ -1,0 +1,44 @@
+version: '3.1'
+services:
+
+    runner:
+
+        image: skyant-runner
+        stdin_open: true
+        tty: true
+
+        cap_add:
+            - SYS_ADMIN
+        devices:
+            - /dev/fuse
+        ports:
+            - "8008:8008"
+
+        build:
+            context: .
+            dockerfile: dockerfile
+
+        environment:
+            -   MOUNT_GCS=temp-tworld:tmp/=/var/gcs
+            -   DEBUG_GCS=true
+            -   GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/gcloud/application_default_credentials.json
+
+        volumes:
+
+            -   type: bind
+                source: $PWD/src/wrapper.sh
+                target: /opt/skyant/wrapper.sh
+
+            -   type: bind
+                source: $PWD/src/run.sh
+                target: /opt/skyant/run.sh
+
+            -   type: bind
+                source: $PWD/.lab/index.py
+                target: /opt/skyant/index.py
+
+            -   type: bind
+                source: $HOME/.config/gcloud/application_default_credentials.json
+                target: $HOME/.config/gcloud/application_default_credentials.json
+
+        #command: /opt/skyant/wrapper.sh
