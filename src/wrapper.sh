@@ -11,11 +11,9 @@ for point in $prep; do
     path=$2
 
     set -- `echo $1 | tr ':' ' '`
-    echo $2
     bucket=$1; folder=$2
 
-    sudo mkdir -m 755 -p $path
-    sudo chown $EUID:$EUID $path
+    mkdir -m 755 -p $path && chown skyant:skyant $path
     
     
     if [[ $folder = "/" ]]
@@ -24,12 +22,13 @@ for point in $prep; do
 
             if [[ $DEBUG_GCS = true ]]
                 then
-                    sudo gcsfuse -o allow_other --uid $EUID --gid $EUID \
-                        --implicit-dirs --debug_gcs --debug_fuse $bucket $path || exit 1;
+                    gcsfuse -o allow_other --uid 10001 --gid 10001 \
+                        --debug_http --debug_invariants --debug_gcs --debug_fuse \
+                        --implicit-dirs $bucket $path
                     echo "The GCS $bucket was mounted in $path with debug flag"
                 else
-                    sudo gcsfuse -o allow_other --uid $EUID --gid $EUID \
-                        --implicit-dirs $bucket $path || exit 1;
+                    gcsfuse -o allow_other --uid 10001 --gid 10001 \
+                        --implicit-dirs $bucket $path
                     echo "The GCS $bucket was mounted in $path"
             fi
 
@@ -38,12 +37,13 @@ for point in $prep; do
     
             if [[ $DEBUG_GCS = true ]]
                 then
-                    sudo gcsfuse -o allow_other --uid $EUID --gid $EUID \
-                        --implicit-dirs --debug_gcs --debug_fuse --only-dir $folder $bucket $path || exit 1;
+                    gcsfuse -o allow_other --uid 10001 --gid 10001 \
+                        --debug_http --debug_invariants --debug_gcs --debug_fuse \
+                        --implicit-dirs --only-dir $folder $bucket $path
                     echo "The $folder from GCS $bucket was mounted in $path with debug flag"
                 else
-                    sudo gcsfuse -o allow_other --uid $EUID --gid $EUID \
-                        --implicit-dirs --only-dir $folder $bucket $path || exit 1;
+                    gcsfuse -o allow_other --uid 10001 --gid 10001 \
+                        --implicit-dirs --only-dir $folder $bucket $path
                     echo "The $folder from GCS $bucket was mounted in $path"
             fi
     fi
@@ -51,24 +51,24 @@ for point in $prep; do
 done
 
 
-sudo mkdir -m 755 -p $HOME/.postgresql/.mkdir
-sudo chown $EUID:$EUID $HOME/.postgresql
-
 if [ -f /var/client-key/pg.pem ]; then
-    cp /var/client-key/pg.pem $HOME/.postgresql/postgresql.key;
-    chmod 600 $HOME/.postgresql/postgresql.key;
+    cp /var/client-key/pg.pem /home/skyant/.postgresql/postgresql.key
+    chown skyant:skyant /home/skyant/.postgresql/postgresql.key
+    chmod 600 /home/skyant/.postgresql/postgresql.key
 fi
 
 if [ -f /var/client-crt/pg.pem ]; then
-    cp /var/client-crt/pg.pem $HOME/.postgresql/postgresql.crt;
+    cp /var/client-crt/pg.pem /home/skyant/.postgresql/postgresql.crt
+    chown skyant:skyant /home/skyant/.postgresql/postgresql.crt
 fi
 
 if [ -f /var/server-ca/pg.pem ]; then
-    cp /var/server-ca/pg.pem $HOME/.postgresql/root.crt;
+    cp /var/server-ca/pg.pem /home/skyant/.postgresql/root.crt
+    chown skyant:skyant /home/skyant/.postgresql/root.crt
 fi
 
 
-$WORKDIR/run.sh &
+su skyant -c $WORKDIR/run.sh &
 
 # Exit immediately when one of the background processes terminate.
 wait -n
