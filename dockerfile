@@ -58,4 +58,4 @@ RUN \
 
 
 ENTRYPOINT ["/usr/bin/tini", "--"] 
-CMD [ "bash", "-c", "opt/wrapper.sh" ]
+CMD [ "bash", "-c", "/opt/wrapper.sh" ]
