@@ -5,8 +5,7 @@ ARG WORKDIR=/opt/skyant
 
 WORKDIR $WORKDIR
 
-COPY src $WORKDIR
-COPY mc/ /tmp/mc
+COPY src/pod/ $WORKDIR
 COPY src/wrapper.sh /opt/wrapper.sh
 
 
@@ -26,8 +25,8 @@ RUN \
     mkdir -p --mode=750 /home/skyant/.postgresql && chown skyant:skyant /home/skyant/.postgresql
 
     
-COPY /tmp/mc/root.ini /root/.config/mc/ini
-COPY --chown=skyant:skyant /tmp/mc/skyant.ini /home/skyant/.config/mc/ini
+COPY src/mc/root.ini /root/.config/mc/ini
+COPY --chown=skyant:skyant src/mc/skyant.ini /home/skyant/.config/mc/ini
 COPY cloudrun.req /var/pip/cloudrun.req
 
 RUN \
