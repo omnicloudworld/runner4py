@@ -30,26 +30,21 @@ COPY --chown=skyant:skyant src/mc/skyant.ini /home/skyant/.config/mc/ini
 COPY cloudrun.req /var/pip/cloudrun.req
 
 RUN \
-    apt-get update &&\
-    apt-get install \
-        apt-utils tini lsb-release build-essential gnupg2 curl mc \
-        -y --no-install-recommends &&\
-    apt-get install -y unzip nodejs npm &&\
-    release=`lsb_release -c -s`; \
+    apt update && apt upgrade -y &&\
+    apt install -y --no-install-recommends \
+        apt-utils tini build-essential gnupg2 curl wget mc &&\
+    apt install -y \
+        unzip nodejs npm &&\
     \
-    status_code=$(curl --write-out %{http_code} --silent --output /dev/null \
-        https://packages.cloud.google.com/apt/dists/gcsfuse-$release/main/binary-amd64/Packages.gz) &&\
-    if [[ $status_code -eq 200 ]]; \
-        then \
-            gcsFuseRepo=gcsfuse-$release; \
-        else \
-            gcsFuseRepo=gcsfuse-buster; \
-    fi &&\
-    \
-    echo "deb http://packages.cloud.google.com/apt $gcsFuseRepo main" | \
-        tee /etc/apt/sources.list.d/gcsfuse.list; \
+    echo "deb http://packages.cloud.google.com/apt gcsfuse-bullseye main" | \
+        tee /etc/apt/sources.list.d/gcsfuse.list &&\
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - &&\
-    apt update && apt-get install -y gcsfuse &&\
+    \
+    echo "deb http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" > \
+        /etc/apt/sources.list.d/pgdg.list &&\
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - &&\
+    \
+    apt update && apt install -y gcsfuse postgresql-client-13 postgresql-client-14 &&\
     apt autoremove -y && apt clean --dry-run
 
 RUN \
