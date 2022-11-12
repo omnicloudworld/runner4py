@@ -3,7 +3,7 @@ services:
 
     runner:
 
-        image: skyant-runner
+        image: local:skyant-runner
         stdin_open: true
         tty: true
 
@@ -19,7 +19,7 @@ services:
             dockerfile: dockerfile
 
         environment:
-            -   MOUNT_GCS=temp-tworld:tmp/=/var/gcs
+            -   MOUNT_GCS=${MOUNT_GCS}
             -   DEBUG_GCS=true
             -   GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/gcloud/application_default_credentials.json
 
