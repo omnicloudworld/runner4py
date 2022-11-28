@@ -17,6 +17,9 @@ docker2gitlab:
     only:
         refs:
             -   main
+        changes:
+            -   dockerfile
+            -   src/**/*
     script:
         -   docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
         -   docker build --squash --compress -t ${CI_PROJECT_PATH_SLUG} .
